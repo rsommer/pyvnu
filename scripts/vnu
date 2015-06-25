@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+# coding: utf-8
+import sys as _sys
+
+import vnu as _vnu
+
+
+if __name__ == "__main__":
+    v = _vnu.HTML5Validator(out="text")
+    status, response = v.validate(_sys.argv[1])
+    print response
