@@ -40,6 +40,7 @@ _setup.setup(
     ],
     tests_require=[
         "pytest",
+        "pytest-cov",
     ],
     cmdclass={
         "test": PyTest,
