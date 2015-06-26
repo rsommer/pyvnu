@@ -39,9 +39,9 @@ _setup.setup(
         "requests",
     ],
     tests_require=[
-        "mock",
-        "pytest",
         "pytest-cov",
+        "pytest",
+        "mock",
     ],
     cmdclass={
         "test": PyTest,
