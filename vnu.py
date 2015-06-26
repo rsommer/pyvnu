@@ -23,9 +23,9 @@ class HTML5Validator(object):
     validator_url = "https://validator.nu/"
 
     # Template to allow checking of HTML5 framents
-    fragment_prefix = "<!DOCTYPE html><html><head><title>Fragent</title></head><body>"
-    fragment_suffix = "</body></html>"
-    fragment_template = fragment_prefix + "{fragment}" + fragment_suffix
+    fragment_prefix = u"<!DOCTYPE html><html><head><title>Fragent</title></head><body>"
+    fragment_suffix = u"</body></html>"
+    fragment_template = fragment_prefix + u"{fragment}" + fragment_suffix
 
     def __init__(
         self,
@@ -51,6 +51,7 @@ class HTML5Validator(object):
 
         if validator_url is not None:
             self.validator_url = validator_url
+        self.charset = charset
         self.session = _requests.Session()
         self.session.headers.update(
             {"content-type": "{0}; charset={1}".format(content_type, charset)}
@@ -118,9 +119,12 @@ class HTML5Validator(object):
         is wrapped into minimal HTML5 boilerplate.
 
         Args:
-            fragment (str): A HTML5 fragment.
+            fragment (str or unicode): A HTML5 fragment.
             params (Optional[dict]): Parameter override. Defaults to None.
         """
+        if isinstance(fragment, str):
+            fragment = fragment.decode(self.charset)
+
         return self.validate_document(
             self.fragment_template.format(fragment=fragment),
             params=params
@@ -130,10 +134,13 @@ class HTML5Validator(object):
         """Validate a full HTML5 document.
 
         Args:
-            document (str): The full document.
+            document (str or unicode): The full document.
             params (Optional[dict]): Parameter override. Defaults to None.
         """
         handler, request_params = self._prepare(params)
+
+        if isinstance(document, unicode):
+            document = document.encode(self.charset)
 
         return handler(
             self.session.post(

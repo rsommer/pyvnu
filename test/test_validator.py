@@ -38,8 +38,26 @@ def test_valid_fragment(validator):
     assert all([msg["type"] == "info" for msg in output["messages"]])
 
 
+def test_valid_unicode_fragment(validator):
+    status, output = validator.validate_fragment(u"<div>öüä</div>")
+    assert status == 200
+    assert all([msg["type"] == "info" for msg in output["messages"]])
+
+
 def test_invalid_fragment(validator):
     status, json = validator.validate_fragment("<div></vid>")
+    assert status == 200
+    assert any([msg["type"] == "error" for msg in json["messages"]])
+
+
+def test_invalid_document(validator):
+    status, json = validator.validate_document("<!doctype html><div></vid>")
+    assert status == 200
+    assert any([msg["type"] == "error" for msg in json["messages"]])
+
+
+def test_invalid_unicode_document(validator):
+    status, json = validator.validate_document(u"<!doctype html><div>öüä</vid>")
     assert status == 200
     assert any([msg["type"] == "error" for msg in json["messages"]])
 
