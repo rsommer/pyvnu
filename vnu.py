@@ -121,14 +121,9 @@ class HTML5Validator(object):
             fragment (str): A HTML5 fragment.
             params (Optional[dict]): Parameter override. Defaults to None.
         """
-        handler, request_params = self._prepare(params)
-
-        return handler(
-            self.session.post(
-                self.validator_url,
-                params=request_params,
-                data=self.fragment_template.format(fragment=fragment),
-            )
+        return self.validate_document(
+            self.fragment_template.format(fragment=fragment),
+            params=params
         )
 
     def validate_document(self, document, params=None):
