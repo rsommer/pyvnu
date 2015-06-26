@@ -43,3 +43,6 @@ boilerplate in order to be able to validate it.
 To validate a page from the commandline: ::
 
     vnu https://www.google.de/
+    
+.. image:: https://travis-ci.org/rsommer/pyvnu.svg?branch=master
+   :target: https://travis-ci.org/rsommer/pyvnu
